@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace clockPagetest1
@@ -14,9 +13,9 @@ namespace clockPagetest1
         private int[] referenceString;
         private int currentReferenceIndex;
         private Label lblInfo, outputLabel;
-        private System.Windows.Forms.Timer animationTimer;
         private TextBox txtPages, txtFrames;
-        private Button btnStart;
+        private Button btnStart, btnNextStep;
+        private Panel panel1;
 
         public Form1()
         {
@@ -27,20 +26,20 @@ namespace clockPagetest1
         private void InitializeUI()
         {
             this.Text = "Clock Page Replacement";
-            this.Size = new Size(600, 500);
+
             this.DoubleBuffered = true;
 
             Label lblPages = new Label()
             {
                 Text = "Enter Page References (comma-separated):",
-                Location = new Point(10, 10),
+                Location = new Point(78, 24),
                 AutoSize = true
             };
             this.Controls.Add(lblPages);
 
             txtPages = new TextBox()
             {
-                Location = new Point(250, 10),
+                Location = new Point(51, 63),
                 Width = 300
             };
             this.Controls.Add(txtPages);
@@ -48,14 +47,14 @@ namespace clockPagetest1
             Label lblFrames = new Label()
             {
                 Text = "Enter Number of Frames:",
-                Location = new Point(10, 40),
+                Location = new Point(524, 23),
                 AutoSize = true
             };
             this.Controls.Add(lblFrames);
 
             txtFrames = new TextBox()
             {
-                Location = new Point(250, 40),
+                Location = new Point(544, 63),
                 Width = 50
             };
             this.Controls.Add(txtFrames);
@@ -65,8 +64,17 @@ namespace clockPagetest1
                 Text = "Start Simulation",
                 Location = new Point(10, 70)
             };
-            btnStart.Click += (s, e) => StartSimulation();
-            this.Controls.Add(btnStart);
+            startButton.Click += (s, e) => StartSimulation(); // changed button
+            //this.Controls.Add(btnStart);
+
+            btnNextStep = new Button()
+            {
+                Text = "Next Step",
+                Location = new Point(130, 70),
+                Enabled = false
+            };
+            nextButton.Click += (s, e) => ProcessNextReference(); //changed button
+            //this.Controls.Add(btnNextStep);
 
             lblInfo = new Label()
             {
@@ -79,17 +87,25 @@ namespace clockPagetest1
             outputLabel = new Label()
             {
                 AutoSize = false,
-                Size = new Size(580, 300),
-                Location = new Point(10, 130),
+                Size = new Size(680, 380),
+                Location = new Point(10, 10),
                 Font = new Font("Courier New", 10),
                 BorderStyle = BorderStyle.FixedSingle
             };
-            this.Controls.Add(outputLabel);
+            //this.Controls.Add(outputLabel);
 
-            animationTimer = new System.Windows.Forms.Timer();
-            animationTimer.Interval = 1000;
-            animationTimer.Tick += (s, e) => ProcessNextReference();
-        } 
+            panel1 = new Panel()
+            {
+                Location = new Point(120, 160),
+                Size = new Size(700, 400),
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.LightBlue
+            };
+            this.Controls.Add(panel1);
+            panel1.Controls.Add(outputLabel);
+
+
+        }
 
         private void StartSimulation()
         {
@@ -107,7 +123,9 @@ namespace clockPagetest1
 
                 outputLabel.Text = "";
                 PrintTableHeader();
-                animationTimer.Start();
+                lblInfo.Text = "Press 'Next Step' to proceed.";
+
+                btnNextStep.Enabled = true;
             }
             catch
             {
@@ -119,8 +137,8 @@ namespace clockPagetest1
         {
             if (currentReferenceIndex >= referenceString.Length)
             {
-                animationTimer.Stop();
                 lblInfo.Text = "Simulation Finished";
+                btnNextStep.Enabled = false;
                 return;
             }
 
@@ -156,30 +174,50 @@ namespace clockPagetest1
                 }
             }
 
-            PrintTableRow(page, pageFault);
+            PrintTableRow(pageFault);
         }
 
         private void PrintTableHeader()
         {
-            string header = $"{"Time",-5} {"Page",-5} | ";
-            for (int i = 0; i < frames.Count; i++)
-            {
-                header += $"Frame {i + 1} | ";
-            }
-            header += "Page Fault?\n";
-            header += new string('-', 60) + "\n";
-            outputLabel.Text = header;
+            outputLabel.Text = "Time:       ";
+            for (int i = 0; i < referenceString.Length; i++)
+                outputLabel.Text += $"{i + 1,-4}";
+
+            outputLabel.Text += "\nPage Ref:   ";
+            for (int i = 0; i < referenceString.Length; i++)
+                outputLabel.Text += $"{referenceString[i],-4}";
+
+            outputLabel.Text += "\n";
         }
 
-        private void PrintTableRow(int page, bool pageFault)
+        private void PrintTableRow(bool pageFault)
         {
-            string row = $"{currentReferenceIndex,-5} {page,-5} | ";
+            string[] lines = outputLabel.Text.Split('\n');
+            string pageRefRow = lines.Length > 1 ? lines[1] : "Page Ref:  ";
+
+            List<string> frameRows = new List<string>();
             for (int i = 0; i < frames.Count; i++)
             {
-                row += (frames[i] == -1 ? " " : frames[i].ToString()) + "      | ";
+                string existingLine = lines.Length > i + 3 ? lines[i + 3] : $"Frame #{i + 1}: ";
+                string frameValue = (frames[i] == -1 ? " " : frames[i].ToString());
+                string useBitMarker = useBits[i] ? "*" : "";
+                frameRows.Add(existingLine.PadRight(12) + $"{frameValue}{useBitMarker,-3}");
             }
-            row += (pageFault ? "Yes" : "No");
-            outputLabel.Text += row + "\n";
+
+            string pageFaultRow = lines.Length > frames.Count + 3 ? lines[frames.Count + 3] : "Page Fault: ";
+            pageFaultRow += (pageFault ? $"{'X',-4}" : "    ");
+
+            outputLabel.Text = $"{lines[0]}\n{pageRefRow}\n\n{string.Join("\n", frameRows)}\n{pageFaultRow}";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void start_MouseClick(object sender, MouseEventArgs e)
+        {
+            //this.Controls.Add(start);
         }
     }
 }

@@ -28,12 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            startButton = new Button();
+            nextButton = new Button();
+            SuspendLayout();
+            // 
+            // startButton
+            // 
+            startButton.Location = new Point(337, 108);
+            startButton.Name = "startButton";
+            startButton.Size = new Size(105, 42);
+            startButton.TabIndex = 1;
+            startButton.Text = "Start";
+            startButton.UseVisualStyleBackColor = true;
+            // 
+            // nextButton
+            // 
+            nextButton.Location = new Point(513, 108);
+            nextButton.Name = "nextButton";
+            nextButton.Size = new Size(105, 42);
+            nextButton.TabIndex = 2;
+            nextButton.Text = "Next Step";
+            nextButton.UseVisualStyleBackColor = true;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.LightSteelBlue;
+            ClientSize = new Size(947, 578);
+            Controls.Add(nextButton);
+            Controls.Add(startButton);
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Form1";
+            Load += Form1_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+        private Button startButton;
+        private Button nextButton;
     }
 }

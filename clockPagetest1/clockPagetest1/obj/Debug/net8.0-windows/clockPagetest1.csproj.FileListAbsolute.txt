@@ -14,3 +14,4 @@ C:\Users\laroc\OneDrive\Desktop\testClockPage\clockPagetest1\clockPagetest1\obj\
 C:\Users\laroc\OneDrive\Desktop\testClockPage\clockPagetest1\clockPagetest1\obj\Debug\net8.0-windows\clockPagetest1.pdb
 C:\Users\laroc\OneDrive\Desktop\testClockPage\clockPagetest1\clockPagetest1\obj\Debug\net8.0-windows\clockPagetest1.genruntimeconfig.cache
 C:\Users\laroc\OneDrive\Desktop\testClockPage\clockPagetest1\clockPagetest1\obj\Debug\net8.0-windows\ref\clockPagetest1.dll
+C:\Users\laroc\OneDrive\Desktop\testClockPage\clockPagetest1\clockPagetest1\obj\Debug\net8.0-windows\clockPagetest1.sourcelink.json
