@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "3UgyFVtnwz4=",
+  "dgSpecHash": "fFRRcR8TRYM=",
   "success": true,
   "projectFilePath": "C:\\Users\\laroc\\OneDrive\\Desktop\\testClockPage\\clockPagetest1\\clockPagetest1\\clockPagetest1.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\laroc\\.nuget\\packages\\krypton.toolkit\\90.25.2.55\\krypton.toolkit.90.25.2.55.nupkg.sha512"
+  ],
   "logs": []
 }
