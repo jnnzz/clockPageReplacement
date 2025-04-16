@@ -16,12 +16,17 @@ namespace clockPagetest1
         private int clockPointer;
         private int[] referenceString;
         private int currentReferenceIndex;
-        private Label lblInfo, outputLabel, timeLabel, pageRefLabel, outputTest;
+        private Label  lblInfo2, outputLabel, timeLabel, pageRefLabel, allFrames;
         private TextBox txtPages, txtFrames;
         private Button btnStart, btnNextStep;
         private Panel timePanel;
         private int pageFaultCount = 0;
         private bool pageFault;
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+        private int progressTarget = 0;
+        private int clickCount = 0;
+
         double noFault;
         double failureRate;
 
@@ -30,6 +35,7 @@ namespace clockPagetest1
         {
             InitializeComponent();
             InitializeUI();
+            InitializeTimer();
 
         }
 
@@ -43,7 +49,7 @@ namespace clockPagetest1
 
             Label lblPages = new Label()
             {
-                Text = "Enter Page References (comma-separated):",
+                Text = "Enter Page Requests (comma-separated):",
                 Location = new Point(365, 85),
                 AutoSize = true
             };
@@ -88,11 +94,20 @@ namespace clockPagetest1
             nextButton.Click += (s, e) => ProcessNextReference();
             //this.Controls.Add(btnNextStep);
 
-            lblInfo = new Label()
+          //  lblInfo = new Label()
+           // {
+           //     Text = "",
+           //     Location = new Point(530, 69),
+            //    Font = new Font("Verdana", 13),
+            //    TextAlign = ContentAlignment.MiddleCenter,
+            //    AutoSize = true
+           // };
+            lblInfo2 = new Label()
             {
                 Text = "",
-                Location = new Point(750, 65),
+                Location = new Point(550, 69),
                 Font = new Font("Verdana", 13),
+                TextAlign = ContentAlignment.MiddleCenter,
                 AutoSize = true
             };
             this.Controls.Add(lblInfo);
@@ -102,28 +117,74 @@ namespace clockPagetest1
                 AutoSize = false,
                 Size = new Size(680, 380),
                 Location = new Point(300, 280),
-                Font = new Font("Verdana", 12),
+                Font = new Font("Verdana", 12, FontStyle.Bold),
                 BackColor = Color.Bisque,
                 BorderStyle = BorderStyle.FixedSingle
 
             };
+            Controls.SetChildIndex(marqueeBar, 0); // 0 = Topmost
+            Controls.SetChildIndex(progressBar, 1);
             //this.Controls.Add(outputLabel);
 
 
 
 
         }
+        public void InitializeTimer()
+        {
 
+            timer.Interval = 10;
+            timer.Tick += Timer_Tick;
+        }
         private async Task StartSimulationWithAnimation()
         {
-            try
+            marqueeBar.MarqueeAnimationSpeed = 10;
+            // Step 1: Validate page request input
+            string[] pagesInput = textReference.Text.Split(',');
+
+            if (pagesInput.Length > 10)
             {
+                reqError.Text = "Maximum of 10 page requests allowed.";
+                textReference.Text = "";
+                return;
+            }
+
+            foreach (string item in pagesInput)
+            {
+                if (!int.TryParse(item.Trim(), out _))
+                {
+                    reqError.Text = "Invalid input. Only numbers separated by commas are allowed.";
+
+                    //MessageBox.Show("Invalid input. Only numbers separated by commas are allowed.");
+                    textReference.Text = "";
+                    // errorMessage.Text = "Invalid input. Only numbers separated by commas are allowed.";
+
+                    return;
+                }
+            }
+
+            // Step 2: Validate frame count
+            if (!int.TryParse(textFrames.Text, out int frameCount))
+            {
+                frameError.Text = "Invalid number of frames. Please enter a valid number.";
+                // MessageBox.Show("Invalid number of frames. Please enter a valid number.");
+                textFrames.Text = "";
+                return;
+            }
+            if (frameCount > 5)
+            {
+                frameError.Text = "Maximum of 5 frames allowed.";
+                textFrames.Text = "";
+                return;
+            }
+            try
+
+            {
+                reqError.Text = "";
+                frameError.Text = "";
                 pageFaultCount = 0;
-                //btnStart.Enabled = false;
-                // Parse input
-                string[] pagesInput = textReference.Text.Split(',');
+
                 referenceString = Array.ConvertAll(pagesInput, int.Parse);
-                int frameCount = int.Parse(textFrames.Text);
 
                 frames = new List<int>(new int[frameCount]);
                 useBits = new List<bool>(new bool[frameCount]);
@@ -134,28 +195,26 @@ namespace clockPagetest1
 
                 outputLabel.Text = "";
                 lblInfo.Text = "Initializing...";
-
-
+                marqueeBar.Visible = true;
 
                 // Animate the timeLabel into position
                 await StartParallelAnimation();
-                //await AnimateLabelIntro();
                 await AnimateTimeLabel();
                 RowFrames(pageFault);
-                //DisplayRowFrames();
 
-
-
-
-                // Print table header after animation completes
-                lblInfo.Text = "Press 'Next Step' to proceed.";
+                lblInfo.Text = "Tap 'Next' to proceed.";
+                marqueeBar.Visible = false;
                 nextButton.Enabled = true;
+                startButton.Enabled = false;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Invalid input. Please enter correct values.");
+                MessageBox.Show("An unexpected error occurred: " + ex.Message);
             }
+
         }
+
+
         private async Task AnimateLabelAsync(Panel panel, int targetX, int targetY, int duration)
         {
             int startX = panel.Left;
@@ -189,7 +248,7 @@ namespace clockPagetest1
 
         private async Task StartParallelAnimation()
         {
-            Task animation1 = AnimateLabelAsync(panelDetails, 30, 109, 2000);
+            Task animation1 = AnimateLabelAsync(panelDetails, 30, 100, 2000);
             //Task animation2 = AnimateLabelAsync(textReference, 300, 200);
             // Task animation3 = AnimateLabelAsync(frameLabel, 300, 300);
 
@@ -240,27 +299,26 @@ namespace clockPagetest1
 
         private async Task AnimateTimeLabel()
         {
-            outputTest = new Label()
-            {
-                AutoSize = false,
+            allFrames = new Label()
+            { 
                 Size = new Size(680, 380),
                 Location = new Point(500, 160),
-                Font = new Font("Consolas", 13),
+                Font = new Font("Consolas", 13, FontStyle.Bold),
                 ForeColor = Color.White,
-                BackColor = Color.SteelBlue,
+                BackColor = Color.FromArgb(70, 65, 117),
                 BorderStyle = BorderStyle.FixedSingle
             };
-            this.Controls.Add(outputTest);
-            outputTest.BringToFront();
+            this.Controls.Add(allFrames);
+            allFrames.BringToFront();
             // Create and position the timeLabel initially off-screen
             timeLabel = new Label()
             {
                 Location = new Point(500, 100), // Start off-screen
                 Size = new Size(680, 30),
                 BorderStyle = BorderStyle.FixedSingle,
-                Font = new Font("Consolas", 13),
-                ForeColor = Color.Black,
-                BackColor = Color.Beige,
+                Font = new Font("Consolas", 13, FontStyle.Bold),
+                ForeColor = Color.White,
+                 BackColor = Color.FromArgb(28, 25, 77),
                 TextAlign = ContentAlignment.MiddleLeft // Align text to the left
             };
             this.Controls.Add(timeLabel);
@@ -273,8 +331,9 @@ namespace clockPagetest1
                 Location = new Point(500, 130), // Start below the timeLabel
                 Size = new Size(680, 30),
                 BorderStyle = BorderStyle.FixedSingle,
-                Font = new Font("Consolas", 13),
-                BackColor = Color.White,
+                Font = new Font("Consolas", 13, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(100, 210, 255),
                 TextAlign = ContentAlignment.MiddleLeft // Align text to the left
             };
             this.Controls.Add(pageRefLabel);
@@ -291,7 +350,7 @@ namespace clockPagetest1
             for (int i = 0; i < referenceString.Length; i++)
                 timerText += $"{i + 1,-5}";
 
-            string pageRefText = "Page Ref :  ";
+            string pageRefText = "Page Req :  ";
             for (int i = 0; i < referenceString.Length; i++)
                 pageRefText += $"{referenceString[i],-5}";
 
@@ -304,11 +363,74 @@ namespace clockPagetest1
             {
                 int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
                 timeLabel.Width = newWidth;
-                pageRefLabel.Width = newWidth; // Animate both labels simultaneously
+                pageRefLabel.Width = newWidth;
+                allFrames.Width = newWidth; // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
                 await Task.Delay(delay);
             }
         }
 
+
+
+        private async Task AnimatePanelFormula()
+        {
+            formulasPanel.Visible = true;
+            int startHeight = 0; // Start collapsed (height = 0)
+            int targetHeight = formulasPanel.Height;/* Your desired expanded height */;
+            int duration = 1000;
+            int steps = 50;
+            int delay = duration / steps;
+            int initialTop = formulasPanel.Top; // Keep original top position
+
+            formulasPanel.Height = startHeight; // Start with 0 height
+
+            for (int i = 0; i <= steps; i++)
+            {
+                int newHeight = startHeight + (targetHeight * i) / steps;
+                formulasPanel.Height = newHeight; // Increase height downward
+                await Task.Delay(delay);
+            }
+        }
+
+        private async Task AnimatePanelFormulaClosing()
+        {
+            int startHeight = formulasPanel.Height; // Current height
+            int targetHeight = 0; // Collapse to 0
+            int duration = 1000;
+            int steps = 50;
+            int delay = duration / steps;
+
+            // We need to DECREASE the height, so we calculate from startHeight down to 0
+            for (int i = 0; i <= steps; i++)
+            {
+                // Calculate the remaining progress (steps - i) to go from startHeight to 0
+                int newHeight = startHeight - (startHeight * i) / steps;
+                formulasPanel.Height = newHeight;
+                await Task.Delay(delay);
+            }
+
+            formulasPanel.Visible = false; // Hide after animation completes
+        }
+        private async Task AnimateButtonRates()
+        {
+            showButton.Visible = true;
+            int startHeight = 0; // Start collapsed (height = 0)
+            int targetHeight = showButton.Height;/* Your desired expanded height */;
+            int duration = 1000;
+            int steps = 50;
+            int delay = duration / steps;
+            int initialTop = showButton.Top; // Keep original top position
+
+            showButton.Height = startHeight; // Start with 0 height
+
+            for (int i = 0; i <= steps; i++)
+            {
+                int newHeight = startHeight + (targetHeight * i) / steps;
+                showButton.Height = newHeight; // Increase height downward
+                await Task.Delay(delay);
+            }
+        }
         private void ProcessNextReference()
         {
             if (currentReferenceIndex >= referenceString.Length)
@@ -316,8 +438,11 @@ namespace clockPagetest1
                 lblInfo.Text = "Simulation Finished";
                 SuccessRate();
                 FailureRate();
+                AnimateButtonRates();
+
                 nextButton.Enabled = false;
-                panelColor.Visible = true;
+                showButton.Visible = true;
+                //panelColor.Visible = true;
 
                 return;
             }
@@ -388,14 +513,13 @@ namespace clockPagetest1
             pageFaultRow += (pageFault ? $"{' ',-1}" : "    ");
             allFrameRows += pageFaultRow + Environment.NewLine + Environment.NewLine + Environment.NewLine;
 
-            outputTest.Text = $"{allFrameRows} ";
+            allFrames.Text = $"{allFrameRows} ";
             // outputTest.Text = $"{pageFault} ";
         }
 
         private void PrintTableRow(bool pageFault)
         {
             string[] lines = outputLabel.Text.Split('\n');
-            // string pageRefRow = lines.Length > 1 ? lines[1] : "Page Ref (test only):  ";
 
             List<string> frameRows = new List<string>();
 
@@ -407,6 +531,17 @@ namespace clockPagetest1
                 string frameValue = (frames[i] == -1 ? " " : frames[i].ToString());
                 string useBitMarker = useBits[i] ? "*" : "";
                 frameRows.Add(existingLine.PadRight(12) + $"{frameValue}{useBitMarker,-4}");
+
+                Label frameLabel = new Label();
+                frameLabel.AutoSize = true;
+                frameLabel.Font = new Font("Consolas", 10);
+                frameLabel.BackColor = Color.LightYellow;
+                frameLabel.Text = $"Frame #{i + 1}: {frameValue}{useBitMarker}";
+                frameLabel.Margin = new Padding(3);
+
+
+                outputLabel.Controls.Add(frameLabel);
+                frameLabel.BringToFront();
             }
 
 
@@ -417,24 +552,42 @@ namespace clockPagetest1
         }
         private void SuccessRate()
         {
-            formulasPanel.Visible = true;
+
             noFault = referenceString.Length - pageFaultCount;
-            successLabel.Text = "= "+noFault+"/" + referenceString.Length + " * 100";
-          
+            successLabel.Text = "= " + noFault + "/" + referenceString.Length + " * 100";
+
 
             double successRate = (double)noFault / referenceString.Length * 100;
             successRate = Math.Round(successRate, 2);
-            successResult.Text = "Success Rate: "+successRate + "%";
-           // MessageBox.Show($"Success Rate: " + successRate);
+            successResult.Text = "Success Rate: " + successRate + "%";
+            // MessageBox.Show($"Success Rate: " + successRate);
         }
         private void FailureRate()
         {
-            failureLabel.Text = "= "+pageFaultCount + "/" + referenceString.Length + " * 100";
+            failureLabel.Text = "= " + pageFaultCount + "/" + referenceString.Length + " * 100";
 
             failureRate = (double)pageFaultCount / referenceString.Length * 100;
             failureRate = Math.Round(failureRate, 2);
-            failureResult.Text = "Failure Rate: "+failureRate + "%";
+            failureResult.Text = "Failure Rate: " + failureRate + "%";
             //MessageBox.Show($"Failure Rate: " + failureRate);
+        }
+
+        public void SmoothProgress(int targetValue)
+        {
+            progressTarget = targetValue; // Set the target value
+
+            timer.Start();
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+
+            if (progressBar.Value < progressTarget)
+                progressBar.Value++;
+            else if (progressBar.Value > progressTarget)
+                progressBar.Value--;
+            else
+                timer.Stop();
+
         }
 
         private void displayResult()
@@ -484,6 +637,7 @@ namespace clockPagetest1
         {
             if (e.KeyCode == Keys.Enter)
             {
+                // errorMessage.Text = "Invalid input. Only numbers separated by commas are allowed.";
                 e.SuppressKeyPress = true; // Prevent the "ding" sound
                 if (textReference.Text != "")
                 {
@@ -491,8 +645,6 @@ namespace clockPagetest1
                 }
             }
         }
-
-
 
         private void textFrames_KeyDown(object sender, KeyEventArgs e)
         {
@@ -508,7 +660,34 @@ namespace clockPagetest1
 
         private void successLabel_Click(object sender, EventArgs e)
         {
-           
+
+        }
+
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            int newLength = referenceString.Length + 1;
+
+            if (clickCount < newLength)
+            {
+                clickCount++;
+                int newTarget = (progressBar.Maximum * clickCount) / newLength;
+
+                // Call the smoothed progress with calculated target
+                SmoothProgress(newTarget);
+            }
+        }
+
+        private void showButton_Click(object sender, EventArgs e)
+        {
+            AnimatePanelFormula();
+
+        }
+
+        private void kryptonButton1_Click(object sender, EventArgs e)
+        {
+             AnimatePanelFormulaClosing();
+
         }
     }
 }
