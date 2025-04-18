@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("clockPagetest1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89485e019e970dd4a19f8fbbb945662c66483bed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d122701a6908555978d3290e161c4dd4672ef60f")]
 [assembly: System.Reflection.AssemblyProductAttribute("clockPagetest1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("clockPagetest1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

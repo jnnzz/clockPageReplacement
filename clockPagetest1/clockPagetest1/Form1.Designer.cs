@@ -39,9 +39,13 @@
             kryptonButton2 = new Krypton.Toolkit.KryptonButton();
             frameError = new Label();
             reqError = new Label();
-            panelColor = new Panel();
+            legendPanel = new Panel();
+            label8 = new Label();
+            label7 = new Label();
+            label6 = new Label();
+            legendLabel = new Label();
             formulasPanel = new Panel();
-            kryptonButton1 = new Krypton.Toolkit.KryptonButton();
+            newReqBTN = new Krypton.Toolkit.KryptonButton();
             label5 = new Label();
             label4 = new Label();
             failureResult = new Label();
@@ -55,9 +59,13 @@
             showButton = new Krypton.Toolkit.KryptonButton();
             progressBar = new Krypton.Toolkit.KryptonProgressBar();
             marqueeBar = new Krypton.Toolkit.KryptonProgressBar();
+            totalFaultsLabel = new Label();
+            totalFaultsPanel = new Panel();
             panelDetails.SuspendLayout();
+            legendPanel.SuspendLayout();
             formulasPanel.SuspendLayout();
             panel1.SuspendLayout();
+            totalFaultsPanel.SuspendLayout();
             SuspendLayout();
             // 
             // label2
@@ -80,7 +88,7 @@
             startButton.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
             startButton.StateCommon.Border.Rounding = 10F;
             startButton.StateCommon.Content.ShortText.Color1 = Color.MidnightBlue;
-            startButton.StateCommon.Content.ShortText.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            startButton.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             startButton.TabIndex = 7;
             startButton.Values.DropDownArrowColor = Color.Empty;
             startButton.Values.Text = "Start";
@@ -94,7 +102,7 @@
             nextButton.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
             nextButton.StateCommon.Border.Rounding = 10F;
             nextButton.StateCommon.Content.ShortText.Color1 = Color.MidnightBlue;
-            nextButton.StateCommon.Content.ShortText.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            nextButton.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             nextButton.TabIndex = 8;
             nextButton.Values.DropDownArrowColor = Color.Empty;
             nextButton.Values.Text = "Next Step";
@@ -171,7 +179,7 @@
             kryptonButton2.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
             kryptonButton2.StateCommon.Border.Rounding = 10F;
             kryptonButton2.StateCommon.Content.ShortText.Color1 = Color.MidnightBlue;
-            kryptonButton2.StateCommon.Content.ShortText.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            kryptonButton2.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             kryptonButton2.TabIndex = 16;
             kryptonButton2.Values.DropDownArrowColor = Color.Empty;
             kryptonButton2.Values.Text = "Back";
@@ -182,9 +190,8 @@
             frameError.ForeColor = Color.Red;
             frameError.Location = new Point(13, 270);
             frameError.Name = "frameError";
-            frameError.Size = new Size(38, 15);
+            frameError.Size = new Size(0, 15);
             frameError.TabIndex = 15;
-            frameError.Text = "label6";
             // 
             // reqError
             // 
@@ -192,23 +199,66 @@
             reqError.ForeColor = Color.Red;
             reqError.Location = new Point(13, 134);
             reqError.Name = "reqError";
-            reqError.Size = new Size(38, 15);
+            reqError.Size = new Size(0, 15);
             reqError.TabIndex = 14;
-            reqError.Text = "label6";
             // 
-            // panelColor
+            // legendPanel
             // 
-            panelColor.BackColor = Color.SkyBlue;
-            panelColor.Location = new Point(544, 595);
-            panelColor.Name = "panelColor";
-            panelColor.Size = new Size(200, 47);
-            panelColor.TabIndex = 16;
-            panelColor.Visible = false;
+            legendPanel.BackColor = Color.SkyBlue;
+            legendPanel.Controls.Add(label8);
+            legendPanel.Controls.Add(label7);
+            legendPanel.Controls.Add(label6);
+            legendPanel.Controls.Add(legendLabel);
+            legendPanel.Location = new Point(670, 549);
+            legendPanel.Name = "legendPanel";
+            legendPanel.Size = new Size(284, 102);
+            legendPanel.TabIndex = 16;
+            legendPanel.Visible = false;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label8.Location = new Point(14, 4);
+            label8.Name = "label8";
+            label8.Size = new Size(66, 21);
+            label8.TabIndex = 26;
+            label8.Text = "Legend:";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label7.Location = new Point(23, 66);
+            label7.Name = "label7";
+            label7.Size = new Size(118, 21);
+            label7.TabIndex = 25;
+            label7.Text = " X = page fault";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label6.Location = new Point(33, 45);
+            label6.Name = "label6";
+            label6.Size = new Size(237, 21);
+            label6.TabIndex = 24;
+            label6.Text = "  = 0 use bit (not recently used)";
+            // 
+            // legendLabel
+            // 
+            legendLabel.AutoSize = true;
+            legendLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            legendLabel.Location = new Point(30, 25);
+            legendLabel.Name = "legendLabel";
+            legendLabel.Size = new Size(211, 21);
+            legendLabel.TabIndex = 23;
+            legendLabel.Text = "* = 1 use bit (recently used)";
             // 
             // formulasPanel
             // 
             formulasPanel.BackColor = Color.FromArgb(0, 0, 64);
-            formulasPanel.Controls.Add(kryptonButton1);
+            formulasPanel.Controls.Add(newReqBTN);
             formulasPanel.Controls.Add(label5);
             formulasPanel.Controls.Add(label4);
             formulasPanel.Controls.Add(failureResult);
@@ -223,15 +273,19 @@
             formulasPanel.TabIndex = 17;
             formulasPanel.Visible = false;
             // 
-            // kryptonButton1
+            // newReqBTN
             // 
-            kryptonButton1.Location = new Point(117, 380);
-            kryptonButton1.Name = "kryptonButton1";
-            kryptonButton1.Size = new Size(191, 25);
-            kryptonButton1.TabIndex = 8;
-            kryptonButton1.Values.DropDownArrowColor = Color.Empty;
-            kryptonButton1.Values.Text = "New Page Request";
-            kryptonButton1.Click += kryptonButton1_Click;
+            newReqBTN.Location = new Point(117, 376);
+            newReqBTN.Name = "newReqBTN";
+            newReqBTN.Size = new Size(191, 38);
+            newReqBTN.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
+            newReqBTN.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
+            newReqBTN.StateCommon.Border.Rounding = 5F;
+            newReqBTN.StateCommon.Content.ShortText.Font = new Font("Segoe UI Black", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            newReqBTN.TabIndex = 8;
+            newReqBTN.Values.DropDownArrowColor = Color.Empty;
+            newReqBTN.Values.Text = "New Page Request";
+            newReqBTN.Click += kryptonButton1_Click;
             // 
             // label5
             // 
@@ -340,13 +394,12 @@
             lblInfo.ForeColor = Color.FromArgb(28, 25, 77);
             lblInfo.Location = new Point(531, 65);
             lblInfo.Name = "lblInfo";
-            lblInfo.Size = new Size(54, 21);
+            lblInfo.Size = new Size(0, 21);
             lblInfo.TabIndex = 21;
-            lblInfo.Text = "label6";
             // 
             // showButton
             // 
-            showButton.Location = new Point(722, 570);
+            showButton.Location = new Point(106, 574);
             showButton.Name = "showButton";
             showButton.Size = new Size(284, 47);
             showButton.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
@@ -385,18 +438,39 @@
             marqueeBar.Values.Text = "";
             marqueeBar.Visible = false;
             // 
+            // totalFaultsLabel
+            // 
+            totalFaultsLabel.AutoSize = true;
+            totalFaultsLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            totalFaultsLabel.Location = new Point(16, 7);
+            totalFaultsLabel.Name = "totalFaultsLabel";
+            totalFaultsLabel.Size = new Size(162, 25);
+            totalFaultsLabel.TabIndex = 23;
+            totalFaultsLabel.Text = "Total Page Fault: ";
+            // 
+            // totalFaultsPanel
+            // 
+            totalFaultsPanel.BackColor = Color.SkyBlue;
+            totalFaultsPanel.Controls.Add(totalFaultsLabel);
+            totalFaultsPanel.Location = new Point(860, 581);
+            totalFaultsPanel.Name = "totalFaultsPanel";
+            totalFaultsPanel.Size = new Size(228, 40);
+            totalFaultsPanel.TabIndex = 24;
+            totalFaultsPanel.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(220, 225, 240);
             ClientSize = new Size(1238, 663);
+            Controls.Add(totalFaultsPanel);
             Controls.Add(marqueeBar);
             Controls.Add(lblInfo);
             Controls.Add(showButton);
             Controls.Add(panel1);
             Controls.Add(formulasPanel);
-            Controls.Add(panelColor);
+            Controls.Add(legendPanel);
             Controls.Add(panelDetails);
             Controls.Add(progressBar);
             FormBorderStyle = FormBorderStyle.None;
@@ -406,10 +480,14 @@
             Load += Form1_Load_1;
             panelDetails.ResumeLayout(false);
             panelDetails.PerformLayout();
+            legendPanel.ResumeLayout(false);
+            legendPanel.PerformLayout();
             formulasPanel.ResumeLayout(false);
             formulasPanel.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            totalFaultsPanel.ResumeLayout(false);
+            totalFaultsPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -423,7 +501,7 @@
         private Krypton.Toolkit.KryptonTextBox textReference;
         private Krypton.Toolkit.KryptonTextBox textFrames;
         private Panel panelDetails;
-        private Panel panelColor;
+        private Panel legendPanel;
         private Panel formulasPanel;
         private Label successLabel;
         private Label label1;
@@ -438,9 +516,15 @@
         private Panel panel1;
         private Krypton.Toolkit.KryptonButton showButton;
         private Krypton.Toolkit.KryptonProgressBar progressBar;
-        private Krypton.Toolkit.KryptonButton kryptonButton1;
+        private Krypton.Toolkit.KryptonButton newReqBTN;
         private Krypton.Toolkit.KryptonButton kryptonButton2;
         private Label lblInfo;
         private Krypton.Toolkit.KryptonProgressBar marqueeBar;
+        private Label legendLabel;
+        private Label label6;
+        private Label label8;
+        private Label label7;
+        private Label totalFaultsLabel;
+        private Panel totalFaultsPanel;
     }
 }

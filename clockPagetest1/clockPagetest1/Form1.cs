@@ -125,7 +125,7 @@ namespace clockPagetest1
             Controls.SetChildIndex(marqueeBar, 0); // 0 = Topmost
             Controls.SetChildIndex(progressBar, 1);
             //this.Controls.Add(outputLabel);
-
+         
 
 
 
@@ -213,6 +213,60 @@ namespace clockPagetest1
             }
 
         }
+        private void ProcessNextReference()
+        {
+            if (currentReferenceIndex >= referenceString.Length)
+            {
+                lblInfo.Text = "Simulation Finished";
+                StartLegendAnimation();
+                AnimateTotalFault();
+                SuccessRate();
+                FailureRate();
+                AnimateButtonRates();
+
+                nextButton.Enabled = false;
+                showButton.Visible = true;
+                //panelColor.Visible = true;
+
+                return;
+            }
+
+            int page = referenceString[currentReferenceIndex++];
+            pageFault = true;
+
+            for (int i = 0; i < frames.Count; i++)
+            {
+                if (frames[i] == page)
+                {
+                    useBits[i] = true;
+                    pageFault = false;
+                    break;
+                }
+            }
+
+            if (pageFault)
+            {
+                pageFaultCount++;
+                while (true)
+                {
+                    if (!useBits[clockPointer])
+                    {
+                        frames[clockPointer] = page;
+                        useBits[clockPointer] = true;
+                        clockPointer = (clockPointer + 1) % frames.Count;
+                        break;
+                    }
+                    else
+                    {
+                        useBits[clockPointer] = false;
+                        clockPointer = (clockPointer + 1) % frames.Count;
+                    }
+                }
+            }
+
+            PrintTableRow(pageFault);
+            RowFrames(pageFault); // Pass pageFault to RowFrames method
+        }
 
 
         private async Task AnimateLabelAsync(Panel panel, int targetX, int targetY, int duration)
@@ -254,9 +308,18 @@ namespace clockPagetest1
 
             await Task.WhenAll(animation1); // Run concurrently
         }
+        private async Task StartLegendAnimation()
+        {
+            Task animation1 = AnimateLabelAsync(legendPanel, 560, 549, 2000);
+   
+
+            await Task.WhenAll(animation1); // Run concurrently
+        }
+
 
         // Easing function (same as before)
         private double EaseOutQuint(double progress) => 1 - Math.Pow(1 - progress, 5);
+
         private async Task AnimateLabelIntro()
         {
             int startX = labelReference.Left; // Original X position
@@ -299,6 +362,7 @@ namespace clockPagetest1
 
         private async Task AnimateTimeLabel()
         {
+            AnimatePanelLegend();
             allFrames = new Label()
             { 
                 Size = new Size(680, 380),
@@ -332,7 +396,7 @@ namespace clockPagetest1
                 Size = new Size(680, 30),
                 BorderStyle = BorderStyle.FixedSingle,
                 Font = new Font("Consolas", 13, FontStyle.Bold),
-                ForeColor = Color.White,
+                ForeColor = Color.FromArgb(28, 25, 77),
                 BackColor = Color.FromArgb(100, 210, 255),
                 TextAlign = ContentAlignment.MiddleLeft // Align text to the left
             };
@@ -365,6 +429,46 @@ namespace clockPagetest1
                 timeLabel.Width = newWidth;
                 pageRefLabel.Width = newWidth;
                 allFrames.Width = newWidth; // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+            
+        }
+
+
+        private async Task AnimatePanelLegend()
+        {
+            legendPanel.Visible = true;
+            int startWidth = 0; // Starting width
+            int targetWidth = 284; // Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                legendPanel.Width = newWidth;
+               // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+        }
+        private async Task AnimateTotalFault()
+        {
+            totalFaultsLabel.Text = "Total Page Faults: " + pageFaultCount;
+            totalFaultsPanel.Visible = true;
+            int startWidth = 0; // Starting width
+            int targetWidth = 228; // Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                totalFaultsPanel.Width = newWidth;
+                // Adjust outputLabel width as well
 
                 // Animate both labels simultaneously
                 await Task.Delay(delay);
@@ -431,58 +535,7 @@ namespace clockPagetest1
                 await Task.Delay(delay);
             }
         }
-        private void ProcessNextReference()
-        {
-            if (currentReferenceIndex >= referenceString.Length)
-            {
-                lblInfo.Text = "Simulation Finished";
-                SuccessRate();
-                FailureRate();
-                AnimateButtonRates();
-
-                nextButton.Enabled = false;
-                showButton.Visible = true;
-                //panelColor.Visible = true;
-
-                return;
-            }
-
-            int page = referenceString[currentReferenceIndex++];
-            pageFault = true;
-
-            for (int i = 0; i < frames.Count; i++)
-            {
-                if (frames[i] == page)
-                {
-                    useBits[i] = true;
-                    pageFault = false;
-                    break;
-                }
-            }
-
-            if (pageFault)
-            {
-                pageFaultCount++;
-                while (true)
-                {
-                    if (!useBits[clockPointer])
-                    {
-                        frames[clockPointer] = page;
-                        useBits[clockPointer] = true;
-                        clockPointer = (clockPointer + 1) % frames.Count;
-                        break;
-                    }
-                    else
-                    {
-                        useBits[clockPointer] = false;
-                        clockPointer = (clockPointer + 1) % frames.Count;
-                    }
-                }
-            }
-
-            PrintTableRow(pageFault);
-            RowFrames(pageFault); // Pass pageFault to RowFrames method
-        }
+        
         //Pang display after start, then mawala na if next button is pressed
         /*private void DisplayRowFrames()
         {
@@ -687,6 +740,7 @@ namespace clockPagetest1
         private void kryptonButton1_Click(object sender, EventArgs e)
         {
              AnimatePanelFormulaClosing();
+
 
         }
     }
