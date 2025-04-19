@@ -16,7 +16,7 @@ namespace clockPagetest1
         private int clockPointer;
         private int[] referenceString;
         private int currentReferenceIndex;
-        private Label  lblInfo2, outputLabel, timeLabel, pageRefLabel, allFrames;
+        private Label lblInfo2, outputLabel, timeLabel, pageRefLabel, allFrames;
         private TextBox txtPages, txtFrames;
         private Button btnStart, btnNextStep;
         private Panel timePanel;
@@ -92,16 +92,7 @@ namespace clockPagetest1
                 Enabled = false
             };
             nextButton.Click += (s, e) => ProcessNextReference();
-            //this.Controls.Add(btnNextStep);
-
-          //  lblInfo = new Label()
-           // {
-           //     Text = "",
-           //     Location = new Point(530, 69),
-            //    Font = new Font("Verdana", 13),
-            //    TextAlign = ContentAlignment.MiddleCenter,
-            //    AutoSize = true
-           // };
+        
             lblInfo2 = new Label()
             {
                 Text = "",
@@ -125,7 +116,7 @@ namespace clockPagetest1
             Controls.SetChildIndex(marqueeBar, 0); // 0 = Topmost
             Controls.SetChildIndex(progressBar, 1);
             //this.Controls.Add(outputLabel);
-         
+
 
 
 
@@ -218,11 +209,11 @@ namespace clockPagetest1
             if (currentReferenceIndex >= referenceString.Length)
             {
                 lblInfo.Text = "Simulation Finished";
+              
+                
                 StartLegendAnimation();
                 AnimateTotalFault();
-                SuccessRate();
-                FailureRate();
-                AnimateButtonRates();
+            
 
                 nextButton.Enabled = false;
                 showButton.Visible = true;
@@ -311,11 +302,16 @@ namespace clockPagetest1
         private async Task StartLegendAnimation()
         {
             Task animation1 = AnimateLabelAsync(legendPanel, 560, 549, 2000);
-   
+
 
             await Task.WhenAll(animation1); // Run concurrently
         }
+        private async Task StartNewRequest()
+        {
+            Task animation1 = AnimateLabelAsync(panelDetails, 424, 100, 2000);
+            await Task.WhenAll(animation1); // Run concurrently
 
+        }
 
         // Easing function (same as before)
         private double EaseOutQuint(double progress) => 1 - Math.Pow(1 - progress, 5);
@@ -341,30 +337,12 @@ namespace clockPagetest1
                 await Task.Delay(delay);
             }
         }
-        //  private async Task AnimatePanelTest()
-        // {
-        //    int startHeight = panelTest.Height;
-        //     int duration = 1000;
-        //     int steps = 50;
-        //     int delay = duration / steps;
-        //     int initialTop = panelTest.Top;
-
-        //    for (int i = 0; i <= steps; i++)
-        //    {
-        //         int newHeight = startHeight - (startHeight * i) / steps;
-        //         int newTop = initialTop + (startHeight - newHeight); // Adjust top position
-        //
-        //         panelTest.Height = newHeight;
-        //         panelTest.Top = newTop;
-        //        await Task.Delay(delay);
-        //    }
-        // }
 
         private async Task AnimateTimeLabel()
         {
             AnimatePanelLegend();
             allFrames = new Label()
-            { 
+            {
                 Size = new Size(680, 380),
                 Location = new Point(500, 160),
                 Font = new Font("Consolas", 13, FontStyle.Bold),
@@ -382,12 +360,12 @@ namespace clockPagetest1
                 BorderStyle = BorderStyle.FixedSingle,
                 Font = new Font("Consolas", 13, FontStyle.Bold),
                 ForeColor = Color.White,
-                 BackColor = Color.FromArgb(28, 25, 77),
+                BackColor = Color.FromArgb(28, 25, 77),
                 TextAlign = ContentAlignment.MiddleLeft // Align text to the left
             };
             this.Controls.Add(timeLabel);
             // timeLabel.Controls.Add(timePanel);
-            // timeLabel.BringToFront();
+             timeLabel.BringToFront();
 
             // Create and position the pageRefLabel initially off-screen
             pageRefLabel = new Label()
@@ -433,7 +411,7 @@ namespace clockPagetest1
                 // Animate both labels simultaneously
                 await Task.Delay(delay);
             }
-            
+
         }
 
 
@@ -449,7 +427,7 @@ namespace clockPagetest1
             {
                 int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
                 legendPanel.Width = newWidth;
-               // Adjust outputLabel width as well
+                // Adjust outputLabel width as well
 
                 // Animate both labels simultaneously
                 await Task.Delay(delay);
@@ -457,6 +435,7 @@ namespace clockPagetest1
         }
         private async Task AnimateTotalFault()
         {
+            AnimateButtonRates();
             totalFaultsLabel.Text = "Total Page Faults: " + pageFaultCount;
             totalFaultsPanel.Visible = true;
             int startWidth = 0; // Starting width
@@ -479,9 +458,11 @@ namespace clockPagetest1
 
         private async Task AnimatePanelFormula()
         {
+
+            formulasPanel.BringToFront();
             formulasPanel.Visible = true;
             int startHeight = 0; // Start collapsed (height = 0)
-            int targetHeight = formulasPanel.Height;/* Your desired expanded height */;
+            int targetHeight = 443;/* Your desired expanded height */;
             int duration = 1000;
             int steps = 50;
             int delay = duration / steps;
@@ -495,29 +476,12 @@ namespace clockPagetest1
                 formulasPanel.Height = newHeight; // Increase height downward
                 await Task.Delay(delay);
             }
-        }
-
-        private async Task AnimatePanelFormulaClosing()
-        {
-            int startHeight = formulasPanel.Height; // Current height
-            int targetHeight = 0; // Collapse to 0
-            int duration = 1000;
-            int steps = 50;
-            int delay = duration / steps;
-
-            // We need to DECREASE the height, so we calculate from startHeight down to 0
-            for (int i = 0; i <= steps; i++)
-            {
-                // Calculate the remaining progress (steps - i) to go from startHeight to 0
-                int newHeight = startHeight - (startHeight * i) / steps;
-                formulasPanel.Height = newHeight;
-                await Task.Delay(delay);
-            }
-
-            formulasPanel.Visible = false; // Hide after animation completes
+            MessageBox.Show("Formulas Panel Expanded");
         }
         private async Task AnimateButtonRates()
         {
+            SuccessRate();
+            FailureRate();
             showButton.Visible = true;
             int startHeight = 0; // Start collapsed (height = 0)
             int targetHeight = showButton.Height;/* Your desired expanded height */;
@@ -535,7 +499,111 @@ namespace clockPagetest1
                 await Task.Delay(delay);
             }
         }
-        
+
+        private async Task AnimatePanelFormulaClosing()
+        {
+            int startHeight = 443; // Current height
+            int targetHeight = 0; // Collapse to 0
+            int duration = 1000;
+            int steps = 50;
+            int delay = duration / steps;
+
+            // We need to DECREASE the height, so we calculate from startHeight down to 0
+            for (int i = 0; i <= steps; i++)
+            {
+                // Calculate the remaining progress (steps - i) to go from startHeight to 0
+                int newHeight = startHeight - (startHeight * i) / steps;
+                formulasPanel.Height = newHeight;
+                await Task.Delay(delay);
+            }
+
+            formulasPanel.Visible = false; // Hide after animation completes
+        }
+        private async Task AnimateTotalFaultClosing()
+        {
+
+            int startWidth = totalFaultsPanel.Width; // Starting width
+            int targetWidth = 0; // Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                totalFaultsPanel.Width = newWidth;
+                // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+            totalFaultsPanel.Visible = false; // Hide after animation completes
+        }
+
+        private async Task AnimatePanelLegendClosing()
+        {
+            int startWidth = legendPanel.Width; // Starting width
+            int targetWidth = 0;// Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                legendPanel.Width = newWidth;
+                // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+            legendPanel.Visible = false;
+        }
+        private async Task AnimateTimeLabelClosing()
+        {
+            int startWidth = timeLabel.Width; // Starting width
+            int targetWidth = 0; // Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+
+
+
+            // Animate the width
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                timeLabel.Width = newWidth;
+                pageRefLabel.Width = newWidth;
+                allFrames.Width = newWidth; // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+            timeLabel.Visible = false; // Hide after animation completes
+            pageRefLabel.Visible = false; // Hide after animation completes
+            allFrames.Visible = false; // Hide after animation completes
+
+
+        }
+        private async Task AnimateButtonRatesClosing()
+        {
+            int startHeight = showButton.Height; // Current height
+            int targetHeight = 0; // Collapse to 0
+            int duration = 1000;
+            int steps = 50;
+            int delay = duration / steps;
+
+            // We need to DECREASE the height, so we calculate from startHeight down to 0
+            for (int i = 0; i <= steps; i++)
+            {
+                // Calculate the remaining progress (steps - i) to go from startHeight to 0
+                int newHeight = startHeight - (startHeight * i) / steps;
+                showButton.Height = newHeight;
+                await Task.Delay(delay);
+            }
+
+        }
+
+
         //Pang display after start, then mawala na if next button is pressed
         /*private void DisplayRowFrames()
         {
@@ -673,13 +741,10 @@ namespace clockPagetest1
 
         private void panelTest_Paint(object sender, PaintEventArgs e)
         {
-            //
+
 
         }
-        // private async void continueButton_Click(object sender, EventArgs e)
-        // {
-        //    await AnimatePanelTest();
-        //}
+
 
         private void kryptonLabel2_Click(object sender, EventArgs e)
         {
@@ -736,11 +801,38 @@ namespace clockPagetest1
             AnimatePanelFormula();
 
         }
-
-        private void kryptonButton1_Click(object sender, EventArgs e)
+        // LAST EDIT KAY DIRI NGA PART, WHICH IS ANG PAG RESTART TANAN LIKE SA VALUES POD NILA NEED I RESTART OR RESET PARA MO WORK BALIK [FIXED NA]
+        // LATEST EDIT: 04/20/25, NEED NALANG ANG PAG RESET SA PROGRESS BAR. [FIXED NA]
+        // LAST EDIT: 04/20/25, NEED NALANG ANG PAG ANIMATION CLOSING
+        private async void kryptonButton1_Click(object sender, EventArgs e)
         {
-             AnimatePanelFormulaClosing();
+           timer.Stop();
+            int newLength = referenceString.Length + 1;
 
+            int startValue = progressBar.Value;
+            int duration = 500; // Animation duration in ms
+            int steps = 50;
+
+            for (int i = 0; i <= steps; i++)
+            {
+                progressBar.Value = startValue - (startValue * i / steps);
+                await Task.Delay(duration / steps);
+            }
+
+            clickCount = 0;
+            await AnimatePanelFormulaClosing();
+
+            lblInfo.Text = "";
+            textReference.Text = "";
+            textFrames.Text = "";
+            outputLabel.Text = "";
+            startButton.Enabled = true;
+
+
+        }
+
+        private void startButton_Click_1(object sender, EventArgs e)
+        {
 
         }
     }

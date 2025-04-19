@@ -81,6 +81,7 @@
             // 
             // startButton
             // 
+            startButton.Cursor = Cursors.Hand;
             startButton.Location = new Point(34, 311);
             startButton.Name = "startButton";
             startButton.Size = new Size(136, 42);
@@ -92,9 +93,11 @@
             startButton.TabIndex = 7;
             startButton.Values.DropDownArrowColor = Color.Empty;
             startButton.Values.Text = "Start";
+            startButton.Click += startButton_Click_1;
             // 
             // nextButton
             // 
+            nextButton.Cursor = Cursors.Hand;
             nextButton.Location = new Point(217, 311);
             nextButton.Name = "nextButton";
             nextButton.Size = new Size(136, 42);
@@ -127,7 +130,6 @@
             frameLabel.StateCommon.ShortText.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             frameLabel.TabIndex = 10;
             frameLabel.Values.Text = "Enter page Frames:";
-            frameLabel.Click += kryptonLabel2_Click;
             // 
             // textReference
             // 
@@ -137,7 +139,7 @@
             textReference.Name = "textReference";
             textReference.Size = new Size(385, 39);
             textReference.StateCommon.Border.Rounding = 5F;
-            textReference.StateCommon.Content.Font = new Font("Segoe UI", 11.25F);
+            textReference.StateCommon.Content.Font = new Font("Segoe UI", 12.25F);
             textReference.TabIndex = 12;
             textReference.KeyDown += textReference_KeyDown;
             // 
@@ -149,7 +151,7 @@
             textFrames.Name = "textFrames";
             textFrames.Size = new Size(385, 39);
             textFrames.StateCommon.Border.Rounding = 5F;
-            textFrames.StateCommon.Content.Font = new Font("Segoe UI", 11.25F);
+            textFrames.StateCommon.Content.Font = new Font("Segoe UI", 12.25F);
             textFrames.TabIndex = 13;
             textFrames.KeyDown += textFrames_KeyDown;
             // 
@@ -172,6 +174,7 @@
             // 
             // kryptonButton2
             // 
+            kryptonButton2.Cursor = Cursors.Hand;
             kryptonButton2.Location = new Point(120, 376);
             kryptonButton2.Name = "kryptonButton2";
             kryptonButton2.Size = new Size(136, 42);
@@ -275,6 +278,7 @@
             // 
             // newReqBTN
             // 
+            newReqBTN.Cursor = Cursors.Hand;
             newReqBTN.Location = new Point(117, 376);
             newReqBTN.Name = "newReqBTN";
             newReqBTN.Size = new Size(191, 38);
@@ -399,6 +403,7 @@
             // 
             // showButton
             // 
+            showButton.Cursor = Cursors.Hand;
             showButton.Location = new Point(106, 574);
             showButton.Name = "showButton";
             showButton.Size = new Size(284, 47);
