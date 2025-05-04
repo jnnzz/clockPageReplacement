@@ -50,7 +50,7 @@ namespace clockPagetest1
 
             // Force initial paint
             this.Invalidate();
-            // Make sure to attach the Paint event properly
+         
 
 
         }
@@ -131,9 +131,6 @@ namespace clockPagetest1
             };
             Controls.SetChildIndex(marqueeBar, 0); // 0 = Topmost
             Controls.SetChildIndex(progressBar, 1);
-            //this.Controls.Add(outputLabel);
-
-
 
 
         }
@@ -155,6 +152,16 @@ namespace clockPagetest1
                 textReference.Text = "";
                 return;
             }
+            for (int i = 0; i < pagesInput.Length; i++)
+            {
+                if (pagesInput[i].Length != 1 || pagesInput[i][0] < '0' || pagesInput[i][0] > '9')
+                {
+                    reqError.Text = "Invalid input. Only numbers 0-9.";
+                    textReference.Text = "";
+                    return;
+                }
+            }
+
 
             foreach (string item in pagesInput)
             {
@@ -162,9 +169,7 @@ namespace clockPagetest1
                 {
                     reqError.Text = "Invalid input. Only numbers separated by commas are allowed.";
 
-                    //MessageBox.Show("Invalid input. Only numbers separated by commas are allowed.");
                     textReference.Text = "";
-                    // errorMessage.Text = "Invalid input. Only numbers separated by commas are allowed.";
 
                     return;
                 }
@@ -273,8 +278,160 @@ namespace clockPagetest1
             PrintTableRow(pageFault);
             RowFrames(pageFault); // Pass pageFault to RowFrames method
         }
+/// Animation for the timeLabel and pageRefLabel
+        private async Task AnimateTimeLabel()
+        {
+            AnimatePanelLegend();
+            allFrames = new Label()
+            {
+                Size = new Size(680, 380),
+                Location = new Point(500, 160),
+                Font = new Font("Consolas", 13, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(70, 65, 117),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            this.Controls.Add(allFrames);
+            allFrames.BringToFront();
+            // Create and position the timeLabel initially off-screen
+            timeLabel = new Label()
+            {
+                Location = new Point(500, 100), // Start off-screen
+                Size = new Size(680, 30),
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Consolas", 13, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(28, 25, 77),
+                TextAlign = ContentAlignment.MiddleLeft // Align text to the left
+            };
+            this.Controls.Add(timeLabel);
+            // timeLabel.Controls.Add(timePanel);
+            timeLabel.BringToFront();
+
+            // Create and position the pageRefLabel initially off-screen
+            pageRefLabel = new Label()
+            {
+                Location = new Point(500, 130), // Start below the timeLabel
+                Size = new Size(680, 30),
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Consolas", 13, FontStyle.Bold),
+                ForeColor = Color.FromArgb(28, 25, 77),
+                BackColor = Color.FromArgb(100, 210, 255),
+                TextAlign = ContentAlignment.MiddleLeft // Align text to the left
+            };
+            this.Controls.Add(pageRefLabel);
+            pageRefLabel.BringToFront();
+
+            int startWidth = 0; // Starting width
+            int targetWidth = 680; // Target width
+            int duration = 1000; // Total animation duration in milliseconds
+            int steps = 50; // Number of animation steps
+            int delay = duration / steps; // Delay between steps
+
+            // Build the timer and page ref text (remains unchanged)
+            string timerText = "Time     :  ";
+            for (int i = 0; i < referenceString.Length; i++)
+                timerText += $"{i + 1,-5}";
+
+            string pageRefText = "Page Req :  ";
+            for (int i = 0; i < referenceString.Length; i++)
+                pageRefText += $"{referenceString[i],-5}";
+
+            // Update labels before animation
+            timeLabel.Text = timerText;
+            pageRefLabel.Text = pageRefText;
+
+            // Animate the width
+            for (int i = 0; i <= steps; i++)
+            {
+                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
+                timeLabel.Width = newWidth;
+                pageRefLabel.Width = newWidth;
+                allFrames.Width = newWidth; // Adjust outputLabel width as well
+
+                // Animate both labels simultaneously
+                await Task.Delay(delay);
+            }
+
+        }
+        // only display if ma press ang next button
+
+        private void RowFrames(bool pageFault) // Add pageFault parameter
+        {
+            string[] lines = outputLabel.Text.Split('\n');
+            string allFrameRows = "";
+
+            for (int i = 0; i < frames.Count; i++)
+            {
+                string frameLine = lines.Length > i + 3 ? lines[i + 3] : $"Frame #{i + 1} :";
+                allFrameRows += frameLine + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+            }
+            string pageFaultRow = lines.Length > frames.Count + 3 ? lines[frames.Count + 3] : "Page Fault: ";
+            pageFaultRow += (pageFault ? $"{' ',-1}" : "    ");
+            allFrameRows += pageFaultRow + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+
+            allFrames.Text = $"{allFrameRows} ";
+            // outputTest.Text = $"{pageFault} ";
+        }
+
+        private void PrintTableRow(bool pageFault)
+        {
+            string[] lines = outputLabel.Text.Split('\n');
+
+            List<string> frameRows = new List<string>();
 
 
+            for (int i = 0; i < frames.Count; i++)
+            {
+                string existingLine = lines.Length > i + 3 ? lines[i + 3] : $"Frame #{i + 1} :";
+
+                string frameValue = (frames[i] == -1 ? " " : frames[i].ToString());
+                string useBitMarker = useBits[i] ? "*" : "";
+                frameRows.Add(existingLine.PadRight(12) + $"{frameValue}{useBitMarker,-4}");
+
+                Label frameLabel = new Label();
+                frameLabel.AutoSize = true;
+                frameLabel.Font = new Font("Consolas", 10);
+                frameLabel.BackColor = Color.LightYellow;
+                frameLabel.Text = $"Frame #{i + 1}: {frameValue}{useBitMarker}";
+                frameLabel.Margin = new Padding(3);
+
+
+                outputLabel.Controls.Add(frameLabel);
+                frameLabel.BringToFront();
+            }
+
+
+            string pageFaultRow = lines.Length > frames.Count + 3 ? lines[frames.Count + 3] : "Page Fault: ";
+            pageFaultRow += (pageFault ? $"{'X',-5}" : "     ");
+
+            outputLabel.Text = $"\n\n\n{string.Join("\n", frameRows)}\n{pageFaultRow}";
+        }
+        //success rate
+        private void SuccessRate()
+        {
+
+            noFault = referenceString.Length - pageFaultCount;
+            successLabel.Text = "= " + noFault + "/" + referenceString.Length + " * 100";
+
+
+            double successRate = (double)noFault / referenceString.Length * 100;
+            successRate = Math.Round(successRate, 2);
+            successResult.Text = "Success Rate: " + successRate + "%";
+            // MessageBox.Show($"Success Rate: " + successRate);
+        }
+        //failure rate
+        private void FailureRate()
+        {
+            failureLabel.Text = "= " + pageFaultCount + "/" + referenceString.Length + " * 100";
+
+            failureRate = (double)pageFaultCount / referenceString.Length * 100;
+            failureRate = Math.Round(failureRate, 2);
+            failureResult.Text = "Failure Rate: " + failureRate + "%";
+            //MessageBox.Show($"Failure Rate: " + failureRate);
+        }
+
+        //==animations===
         private async Task AnimateLabelAsync(Panel panel, int targetX, int targetY, int duration)
         {
             int startX = panel.Left;
@@ -355,84 +512,6 @@ namespace clockPagetest1
                 await Task.Delay(delay);
             }
         }
-
-        private async Task AnimateTimeLabel()
-        {
-            AnimatePanelLegend();
-            allFrames = new Label()
-            {
-                Size = new Size(680, 380),
-                Location = new Point(500, 160),
-                Font = new Font("Consolas", 13, FontStyle.Bold),
-                ForeColor = Color.White,
-                BackColor = Color.FromArgb(70, 65, 117),
-                BorderStyle = BorderStyle.FixedSingle
-            };
-            this.Controls.Add(allFrames);
-            allFrames.BringToFront();
-            // Create and position the timeLabel initially off-screen
-            timeLabel = new Label()
-            {
-                Location = new Point(500, 100), // Start off-screen
-                Size = new Size(680, 30),
-                BorderStyle = BorderStyle.FixedSingle,
-                Font = new Font("Consolas", 13, FontStyle.Bold),
-                ForeColor = Color.White,
-                BackColor = Color.FromArgb(28, 25, 77),
-                TextAlign = ContentAlignment.MiddleLeft // Align text to the left
-            };
-            this.Controls.Add(timeLabel);
-            // timeLabel.Controls.Add(timePanel);
-            timeLabel.BringToFront();
-
-            // Create and position the pageRefLabel initially off-screen
-            pageRefLabel = new Label()
-            {
-                Location = new Point(500, 130), // Start below the timeLabel
-                Size = new Size(680, 30),
-                BorderStyle = BorderStyle.FixedSingle,
-                Font = new Font("Consolas", 13, FontStyle.Bold),
-                ForeColor = Color.FromArgb(28, 25, 77),
-                BackColor = Color.FromArgb(100, 210, 255),
-                TextAlign = ContentAlignment.MiddleLeft // Align text to the left
-            };
-            this.Controls.Add(pageRefLabel);
-            pageRefLabel.BringToFront();
-
-            int startWidth = 0; // Starting width
-            int targetWidth = 680; // Target width
-            int duration = 1000; // Total animation duration in milliseconds
-            int steps = 50; // Number of animation steps
-            int delay = duration / steps; // Delay between steps
-
-            // Build the timer and page ref text (remains unchanged)
-            string timerText = "Time     :  ";
-            for (int i = 0; i < referenceString.Length; i++)
-                timerText += $"{i + 1,-5}";
-
-            string pageRefText = "Page Req :  ";
-            for (int i = 0; i < referenceString.Length; i++)
-                pageRefText += $"{referenceString[i],-5}";
-
-            // Update labels before animation
-            timeLabel.Text = timerText;
-            pageRefLabel.Text = pageRefText;
-
-            // Animate the width
-            for (int i = 0; i <= steps; i++)
-            {
-                int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
-                timeLabel.Width = newWidth;
-                pageRefLabel.Width = newWidth;
-                allFrames.Width = newWidth; // Adjust outputLabel width as well
-
-                // Animate both labels simultaneously
-                await Task.Delay(delay);
-            }
-
-        }
-
-
         private async Task AnimatePanelLegend()
         {
             legendPanel.Visible = true;
@@ -472,8 +551,6 @@ namespace clockPagetest1
                 await Task.Delay(delay);
             }
         }
-
-
 
         private async Task AnimatePanelFormula()
         {
@@ -553,7 +630,7 @@ namespace clockPagetest1
             {
                 int newWidth = startWidth + (targetWidth - startWidth) * i / steps;
                 totalFaultsPanel.Width = newWidth;
-                // Adjust outputLabel width as well
+          
 
                 // Animate both labels simultaneously
                 await Task.Delay(delay);
@@ -627,80 +704,6 @@ namespace clockPagetest1
 
         }
 
-        // only display if ma press ang next button
-        private void RowFrames(bool pageFault) // Add pageFault parameter
-        {
-            string[] lines = outputLabel.Text.Split('\n');
-            string allFrameRows = "";
-
-            for (int i = 0; i < frames.Count; i++)
-            {
-                string frameLine = lines.Length > i + 3 ? lines[i + 3] : $"Frame #{i + 1} :";
-                allFrameRows += frameLine + Environment.NewLine + Environment.NewLine + Environment.NewLine;
-            }
-            string pageFaultRow = lines.Length > frames.Count + 3 ? lines[frames.Count + 3] : "Page Fault: ";
-            pageFaultRow += (pageFault ? $"{' ',-1}" : "    ");
-            allFrameRows += pageFaultRow + Environment.NewLine + Environment.NewLine + Environment.NewLine;
-
-            allFrames.Text = $"{allFrameRows} ";
-            // outputTest.Text = $"{pageFault} ";
-        }
-
-        private void PrintTableRow(bool pageFault)
-        {
-            string[] lines = outputLabel.Text.Split('\n');
-
-            List<string> frameRows = new List<string>();
-
-
-            for (int i = 0; i < frames.Count; i++)
-            {
-                string existingLine = lines.Length > i + 3 ? lines[i + 3] : $"Frame #{i + 1} :";
-
-                string frameValue = (frames[i] == -1 ? " " : frames[i].ToString());
-                string useBitMarker = useBits[i] ? "*" : "";
-                frameRows.Add(existingLine.PadRight(12) + $"{frameValue}{useBitMarker,-4}");
-
-                Label frameLabel = new Label();
-                frameLabel.AutoSize = true;
-                frameLabel.Font = new Font("Consolas", 10);
-                frameLabel.BackColor = Color.LightYellow;
-                frameLabel.Text = $"Frame #{i + 1}: {frameValue}{useBitMarker}";
-                frameLabel.Margin = new Padding(3);
-
-
-                outputLabel.Controls.Add(frameLabel);
-                frameLabel.BringToFront();
-            }
-
-
-            string pageFaultRow = lines.Length > frames.Count + 3 ? lines[frames.Count + 3] : "Page Fault: ";
-            pageFaultRow += (pageFault ? $"{'X',-5}" : "     ");
-
-            outputLabel.Text = $"\n\n\n{string.Join("\n", frameRows)}\n{pageFaultRow}";
-        }
-        private void SuccessRate()
-        {
-
-            noFault = referenceString.Length - pageFaultCount;
-            successLabel.Text = "= " + noFault + "/" + referenceString.Length + " * 100";
-
-
-            double successRate = (double)noFault / referenceString.Length * 100;
-            successRate = Math.Round(successRate, 2);
-            successResult.Text = "Success Rate: " + successRate + "%";
-            // MessageBox.Show($"Success Rate: " + successRate);
-        }
-        private void FailureRate()
-        {
-            failureLabel.Text = "= " + pageFaultCount + "/" + referenceString.Length + " * 100";
-
-            failureRate = (double)pageFaultCount / referenceString.Length * 100;
-            failureRate = Math.Round(failureRate, 2);
-            failureResult.Text = "Failure Rate: " + failureRate + "%";
-            //MessageBox.Show($"Failure Rate: " + failureRate);
-        }
-
         public void SmoothProgress(int targetValue)
         {
             progressTarget = targetValue; // Set the target value
@@ -719,22 +722,12 @@ namespace clockPagetest1
 
         }
 
-        private void displayResult()
-        {
-            Thread thread = new Thread(() =>
-            {
-
-
-            });
-
-        }
-
         private void textReference_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 // errorMessage.Text = "Invalid input. Only numbers separated by commas are allowed.";
-                e.SuppressKeyPress = true; // Prevent the "ding" sound
+                e.SuppressKeyPress = true; 
                 if (textReference.Text != "")
                 {
                     textFrames.Focus(); // Move focus to the next TextBox
@@ -780,9 +773,7 @@ namespace clockPagetest1
             showButton.Enabled = false;
 
         }
-        // LAST EDIT KAY DIRI NGA PART, WHICH IS ANG PAG RESTART TANAN LIKE SA VALUES POD NILA NEED I RESTART OR RESET PARA MO WORK BALIK [FIXED NA]
-        // LATEST EDIT: 04/20/25, NEED NALANG ANG PAG RESET SA PROGRESS BAR. [FIXED NA]
-        // LAST EDIT: 04/20/25, NEED NALANG ANG PAG ANIMATION CLOSING
+
         private async void kryptonButton1_Click(object sender, EventArgs e)
         {
             timer.Stop();
@@ -833,12 +824,11 @@ namespace clockPagetest1
 
         private void clockPageForm_Load(object sender, PaintEventArgs e)
         {
-            // Define colors
+        
             Color bottomColor = Color.FromArgb(28, 25, 77); // Dark purple
             Color midColor = Color.FromArgb(220, 225, 240); // Intermediate color
             Color topColor = Color.White;                   // Fade to white
 
-            // Create gradient brush for the entire form
             using (LinearGradientBrush brush = new LinearGradientBrush(
                 new Point(0, this.ClientSize.Height),  // Start at bottom
                 new Point(0, 0),                       // End at top
