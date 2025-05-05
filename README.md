@@ -1,4 +1,4 @@
-A simulator for Clock Page Replacement Policy
+A simple simulator for Clock Page Replacement Policy
 ![image](https://github.com/user-attachments/assets/b0ac9076-d551-4072-a27c-d7b19b0d08d8)
 
 ![image](https://github.com/user-attachments/assets/d971e116-c97e-4a4a-a654-de3ab8658b98)
