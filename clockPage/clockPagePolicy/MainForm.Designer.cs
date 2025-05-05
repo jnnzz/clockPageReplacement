@@ -194,10 +194,10 @@
             continueBtn.Size = new Size(155, 39);
             continueBtn.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
             continueBtn.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
-            continueBtn.StateCommon.Border.Rounding = 10F;
+            continueBtn.StateCommon.Border.Rounding = 7F;
             continueBtn.StateCommon.Content.ShortText.Color1 = Color.Navy;
             continueBtn.StateCommon.Content.ShortText.Color2 = Color.Navy;
-            continueBtn.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            continueBtn.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             continueBtn.TabIndex = 2;
             continueBtn.Values.DropDownArrowColor = Color.Empty;
             continueBtn.Values.Text = "Continue";

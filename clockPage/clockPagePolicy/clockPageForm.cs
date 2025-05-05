@@ -98,7 +98,12 @@ namespace clockPagetest1
                 Text = "Start Simulation",
                 Location = new Point(10, 100)
             };
-            startButton.Click += async (s, e) => await StartSimulationWithAnimation(); // Updated to async
+            startButton.Click += async (s, e) =>
+            {
+              //  startButton.Enabled = false;
+                await StartSimulationWithAnimation();
+            };
+            // Updated to async
                                                                                        //this.Controls.Add(btnStart);
 
             btnNextStep = new Button()
@@ -207,6 +212,7 @@ namespace clockPagetest1
 
                 outputLabel.Text = "";
                 lblInfo.Text = "Initializing...";
+                startButton.Enabled = false;
                 marqueeBar.Visible = true;
 
                 // Animate the timeLabel into position
@@ -356,6 +362,7 @@ namespace clockPagetest1
         }
         // only display if ma press ang next button
 
+        //
         private void RowFrames(bool pageFault) // Add pageFault parameter
         {
             string[] lines = outputLabel.Text.Split('\n');
@@ -580,6 +587,8 @@ namespace clockPagetest1
             showButton.BringToFront();
             SuccessRate();
             FailureRate();
+            newReqBTN.Enabled = true;
+
             showButton.Visible = true;
             int startHeight = 0; // Start collapsed (height = 0)
             int targetHeight = 47;/* Your desired expanded height */;
@@ -776,6 +785,8 @@ namespace clockPagetest1
 
         private async void kryptonButton1_Click(object sender, EventArgs e)
         {
+            startButton.Enabled = true;
+            newReqBTN.Enabled = false;
             timer.Stop();
             int newLength = referenceString.Length + 1;
 

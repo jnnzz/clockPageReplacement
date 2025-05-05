@@ -65,28 +65,33 @@ namespace ClockPageAlgorithm
 
         private void panelBg_Paint(object sender, PaintEventArgs e)
         {
-                Panel panel = sender as Panel;
+            Panel panel = sender as Panel;
 
-                // Define colors
-                Color bottomColor = Color.FromArgb(28, 25, 77); // Dark purple
-                Color midColor = Color.White;   // Intermediate color (optional)
-                Color topColor = Color.White;                   // Fade to white
+            // Define colors
+            Color bottomColor = Color.FromArgb(28, 25, 77); // Dark purple
+            Color midColor = Color.White;   // Intermediate color (optional)
+            Color topColor = Color.White;                   // Fade to white
 
-                // Create a gradient brush
-                using (LinearGradientBrush brush = new LinearGradientBrush(
-                    new Point(0, panel.Height),
-                    new Point(0, 0),
-                    bottomColor,
-                    topColor))
-                {
-                    // Configure gradient stops (20% from bottom starts fading to white)
-                    ColorBlend colorBlend = new ColorBlend();
-                    colorBlend.Positions = new float[] { 0f, 0.3f, 1f }; // 0% (bottom), 20%, 100% (top)
-                    colorBlend.Colors = new Color[] { bottomColor, midColor, topColor };
+            // Create a gradient brush
+            using (LinearGradientBrush brush = new LinearGradientBrush(
+                new Point(0, panel.Height),
+                new Point(0, 0),
+                bottomColor,
+                topColor))
+            {
+                // Configure gradient stops (20% from bottom starts fading to white)
+                ColorBlend colorBlend = new ColorBlend();
+                colorBlend.Positions = new float[] { 0f, 0.3f, 1f }; // 0% (bottom), 20%, 100% (top)
+                colorBlend.Colors = new Color[] { bottomColor, midColor, topColor };
 
-                    brush.InterpolationColors = colorBlend;
-                    e.Graphics.FillRectangle(brush, panel.ClientRectangle);
-                }
+                brush.InterpolationColors = colorBlend;
+                e.Graphics.FillRectangle(brush, panel.ClientRectangle);
             }
+        }
+
+        private void pictureBox5_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -44,6 +44,8 @@
             label6 = new Label();
             legendLabel = new Label();
             formulasPanel = new Panel();
+            pictureBox4 = new PictureBox();
+            pictureBox3 = new PictureBox();
             newReqBTN = new Krypton.Toolkit.KryptonButton();
             label5 = new Label();
             label4 = new Label();
@@ -66,6 +68,8 @@
             panelDetails.SuspendLayout();
             legendPanel.SuspendLayout();
             formulasPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exit).BeginInit();
@@ -87,7 +91,7 @@
             // startButton
             // 
             startButton.Cursor = Cursors.Hand;
-            startButton.Location = new Point(53, 346);
+            startButton.Location = new Point(64, 346);
             startButton.Name = "startButton";
             startButton.OverrideDefault.Back.Color1 = Color.FromArgb(100, 210, 255);
             startButton.OverrideDefault.Back.Color2 = Color.FromArgb(100, 210, 255);
@@ -106,7 +110,7 @@
             // 
             nextButton.Cursor = Cursors.Hand;
             nextButton.Enabled = false;
-            nextButton.Location = new Point(218, 346);
+            nextButton.Location = new Point(239, 346);
             nextButton.Name = "nextButton";
             nextButton.Size = new Size(136, 42);
             nextButton.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
@@ -121,7 +125,7 @@
             // 
             // labelReference
             // 
-            labelReference.Location = new Point(8, 46);
+            labelReference.Location = new Point(19, 46);
             labelReference.Name = "labelReference";
             labelReference.Size = new Size(391, 31);
             labelReference.StateCommon.ShortText.Color1 = Color.White;
@@ -131,7 +135,7 @@
             // 
             // frameLabel
             // 
-            frameLabel.Location = new Point(13, 182);
+            frameLabel.Location = new Point(24, 182);
             frameLabel.Name = "frameLabel";
             frameLabel.Size = new Size(188, 30);
             frameLabel.StateCommon.ShortText.Color1 = Color.White;
@@ -142,24 +146,24 @@
             // textReference
             // 
             textReference.CueHint.CueHintText = "Enter page request";
-            textReference.Location = new Point(13, 92);
+            textReference.Location = new Point(24, 92);
             textReference.Multiline = true;
             textReference.Name = "textReference";
             textReference.Size = new Size(385, 39);
             textReference.StateCommon.Border.Rounding = 5F;
-            textReference.StateCommon.Content.Font = new Font("Segoe UI", 12.25F);
+            textReference.StateCommon.Content.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             textReference.TabIndex = 12;
             textReference.KeyDown += textReference_KeyDown;
             // 
             // textFrames
             // 
             textFrames.CueHint.CueHintText = "Enter page frames";
-            textFrames.Location = new Point(13, 228);
+            textFrames.Location = new Point(24, 228);
             textFrames.Multiline = true;
             textFrames.Name = "textFrames";
             textFrames.Size = new Size(385, 39);
             textFrames.StateCommon.Border.Rounding = 5F;
-            textFrames.StateCommon.Content.Font = new Font("Segoe UI", 12.25F);
+            textFrames.StateCommon.Content.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             textFrames.TabIndex = 13;
             textFrames.KeyDown += textFrames_KeyDown;
             // 
@@ -174,27 +178,29 @@
             panelDetails.Controls.Add(textReference);
             panelDetails.Controls.Add(textFrames);
             panelDetails.Controls.Add(frameLabel);
-            panelDetails.Location = new Point(406, 100);
+            panelDetails.Location = new Point(401, 100);
             panelDetails.Name = "panelDetails";
-            panelDetails.Size = new Size(422, 443);
+            panelDetails.Size = new Size(445, 443);
             panelDetails.TabIndex = 15;
             // 
             // frameError
             // 
             frameError.AutoSize = true;
+            frameError.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             frameError.ForeColor = Color.Red;
-            frameError.Location = new Point(13, 270);
+            frameError.Location = new Point(25, 270);
             frameError.Name = "frameError";
-            frameError.Size = new Size(0, 15);
+            frameError.Size = new Size(0, 21);
             frameError.TabIndex = 15;
             // 
             // reqError
             // 
             reqError.AutoSize = true;
+            reqError.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             reqError.ForeColor = Color.Red;
-            reqError.Location = new Point(13, 134);
+            reqError.Location = new Point(25, 134);
             reqError.Name = "reqError";
-            reqError.Size = new Size(0, 15);
+            reqError.Size = new Size(0, 21);
             reqError.TabIndex = 14;
             // 
             // legendPanel
@@ -253,6 +259,8 @@
             // formulasPanel
             // 
             formulasPanel.BackColor = Color.FromArgb(0, 0, 64);
+            formulasPanel.Controls.Add(pictureBox4);
+            formulasPanel.Controls.Add(pictureBox3);
             formulasPanel.Controls.Add(newReqBTN);
             formulasPanel.Controls.Add(label5);
             formulasPanel.Controls.Add(label4);
@@ -264,20 +272,42 @@
             formulasPanel.Controls.Add(label1);
             formulasPanel.Location = new Point(50, 100);
             formulasPanel.Name = "formulasPanel";
-            formulasPanel.Size = new Size(422, 443);
+            formulasPanel.Size = new Size(445, 443);
             formulasPanel.TabIndex = 17;
             formulasPanel.Visible = false;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.Image = ClockPageAlgorithm.Properties.Resources.cross;
+            pictureBox4.Location = new Point(115, 209);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(43, 28);
+            pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox4.TabIndex = 10;
+            pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Image = ClockPageAlgorithm.Properties.Resources.check__1_;
+            pictureBox3.Location = new Point(115, 13);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(43, 28);
+            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox3.TabIndex = 9;
+            pictureBox3.TabStop = false;
             // 
             // newReqBTN
             // 
             newReqBTN.Cursor = Cursors.Hand;
-            newReqBTN.Location = new Point(117, 376);
+            newReqBTN.Location = new Point(127, 376);
             newReqBTN.Name = "newReqBTN";
             newReqBTN.Size = new Size(191, 38);
             newReqBTN.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
             newReqBTN.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
             newReqBTN.StateCommon.Border.Rounding = 5F;
-            newReqBTN.StateCommon.Content.ShortText.Font = new Font("Segoe UI Black", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            newReqBTN.StateCommon.Content.ShortText.Color1 = Color.FromArgb(0, 0, 64);
+            newReqBTN.StateCommon.Content.ShortText.Color2 = Color.FromArgb(0, 0, 64);
+            newReqBTN.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             newReqBTN.TabIndex = 8;
             newReqBTN.Values.DropDownArrowColor = Color.Empty;
             newReqBTN.Values.Text = "New Page Request";
@@ -288,7 +318,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(140, 205);
+            label5.Location = new Point(154, 205);
             label5.Name = "label5";
             label5.Size = new Size(148, 32);
             label5.TabIndex = 7;
@@ -299,7 +329,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.White;
-            label4.Location = new Point(132, 9);
+            label4.Location = new Point(154, 9);
             label4.Name = "label4";
             label4.Size = new Size(159, 32);
             label4.TabIndex = 6;
@@ -310,7 +340,7 @@
             failureResult.AutoSize = true;
             failureResult.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             failureResult.ForeColor = Color.DarkOrange;
-            failureResult.Location = new Point(124, 326);
+            failureResult.Location = new Point(134, 326);
             failureResult.Name = "failureResult";
             failureResult.Size = new Size(65, 25);
             failureResult.TabIndex = 5;
@@ -321,7 +351,7 @@
             failureLabel.AutoSize = true;
             failureLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             failureLabel.ForeColor = Color.White;
-            failureLabel.Location = new Point(163, 283);
+            failureLabel.Location = new Point(173, 283);
             failureLabel.Name = "failureLabel";
             failureLabel.Size = new Size(70, 21);
             failureLabel.TabIndex = 4;
@@ -332,7 +362,7 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.White;
-            label3.Location = new Point(52, 249);
+            label3.Location = new Point(62, 249);
             label3.Name = "label3";
             label3.Size = new Size(317, 21);
             label3.TabIndex = 3;
@@ -343,7 +373,7 @@
             successResult.AutoSize = true;
             successResult.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             successResult.ForeColor = Color.Lime;
-            successResult.Location = new Point(117, 150);
+            successResult.Location = new Point(127, 150);
             successResult.Name = "successResult";
             successResult.Size = new Size(60, 25);
             successResult.TabIndex = 2;
@@ -354,7 +384,7 @@
             successLabel.AutoSize = true;
             successLabel.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             successLabel.ForeColor = Color.White;
-            successLabel.Location = new Point(160, 92);
+            successLabel.Location = new Point(170, 92);
             successLabel.Name = "successLabel";
             successLabel.Size = new Size(38, 25);
             successLabel.TabIndex = 1;
@@ -366,7 +396,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(49, 57);
+            label1.Location = new Point(59, 57);
             label1.Name = "label1";
             label1.Size = new Size(318, 20);
             label1.TabIndex = 0;
@@ -420,12 +450,12 @@
             // showButton
             // 
             showButton.Cursor = Cursors.Hand;
-            showButton.Location = new Point(106, 574);
+            showButton.Location = new Point(129, 574);
             showButton.Name = "showButton";
             showButton.Size = new Size(284, 47);
             showButton.StateCommon.Back.Color1 = Color.FromArgb(100, 210, 255);
             showButton.StateCommon.Back.Color2 = Color.FromArgb(100, 210, 255);
-            showButton.StateCommon.Border.Rounding = 10F;
+            showButton.StateCommon.Border.Rounding = 7F;
             showButton.StateCommon.Content.Padding = new Padding(4);
             showButton.StateCommon.Content.ShortText.Color1 = Color.FromArgb(28, 25, 77);
             showButton.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 14.75F, FontStyle.Bold);
@@ -518,6 +548,8 @@
             legendPanel.PerformLayout();
             formulasPanel.ResumeLayout(false);
             formulasPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -565,5 +597,7 @@
         private PictureBox exit;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
+        private PictureBox pictureBox4;
+        private PictureBox pictureBox3;
     }
 }

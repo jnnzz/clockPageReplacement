@@ -129,6 +129,6 @@ If the bit is 1, the bit is cleared to 0, and the clock hand moves to the next p
 This process repeats until a page with use bit 0 is found.</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>The Clock Page Replacement Policy is an enhanced version of the Second Chance Algorithm. It aims to strike a balance between performance and simplicity by simulating a circular queue (like the hands of a clock) to track pages in memory. Each page frame has a "use bit" (also called a reference bit) that indicates whether it has been accessed recently.</value>
+    <value>The Second Chance page replacement algorithm is an enhancement over the basic FIFO (First-In, First-Out) algorithm. It aims to improve upon FIFO’s weakness of potentially evicting frequently used pages. Each page frame has a "use bit" (also called a reference bit) that indicates whether it has been accessed recently.</value>
   </data>
 </root>

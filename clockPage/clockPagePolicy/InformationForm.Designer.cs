@@ -34,25 +34,27 @@
             exit = new PictureBox();
             label2 = new Label();
             panel3 = new Panel();
+            label14 = new Label();
+            label15 = new Label();
+            label16 = new Label();
+            label12 = new Label();
+            label11 = new Label();
+            label10 = new Label();
+            label9 = new Label();
+            label5 = new Label();
             label4 = new Label();
+            pictureBox5 = new PictureBox();
             label3 = new Label();
             pictureBox2 = new PictureBox();
             label1 = new Label();
-            panel2 = new Panel();
-            label8 = new Label();
-            label7 = new Label();
-            label6 = new Label();
-            pictureBox3 = new PictureBox();
-            label5 = new Label();
             pictureBox4 = new PictureBox();
             panelBg = new Panel();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exit).BeginInit();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             panelBg.SuspendLayout();
             SuspendLayout();
@@ -104,29 +106,133 @@
             // panel3
             // 
             panel3.BackColor = Color.Transparent;
+            panel3.Controls.Add(label14);
+            panel3.Controls.Add(label15);
+            panel3.Controls.Add(label12);
+            panel3.Controls.Add(label16);
+            panel3.Controls.Add(label11);
+            panel3.Controls.Add(label10);
+            panel3.Controls.Add(label9);
+            panel3.Controls.Add(label5);
             panel3.Controls.Add(label4);
+            panel3.Controls.Add(pictureBox5);
             panel3.Controls.Add(label3);
             panel3.Controls.Add(pictureBox2);
-            panel3.Location = new Point(99, 190);
+            panel3.Location = new Point(33, 181);
             panel3.Name = "panel3";
-            panel3.Size = new Size(500, 389);
+            panel3.Size = new Size(1153, 422);
             panel3.TabIndex = 21;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 15F, FontStyle.Bold | FontStyle.Italic);
+            label14.ForeColor = Color.Navy;
+            label14.Location = new Point(732, 83);
+            label14.Name = "label14";
+            label14.Size = new Size(155, 28);
+            label14.TabIndex = 29;
+            label14.Text = " X = page fault";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Segoe UI", 15F, FontStyle.Bold | FontStyle.Italic);
+            label15.ForeColor = Color.Navy;
+            label15.Location = new Point(745, 55);
+            label15.Name = "label15";
+            label15.Size = new Size(306, 28);
+            label15.TabIndex = 28;
+            label15.Text = "  = 0 use bit (not recently used)";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Segoe UI", 15F, FontStyle.Bold | FontStyle.Italic);
+            label16.ForeColor = Color.Navy;
+            label16.Location = new Point(742, 27);
+            label16.Name = "label16";
+            label16.Size = new Size(271, 28);
+            label16.TabIndex = 27;
+            label16.Text = "* = 1 use bit (recently used)";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label12.Location = new Point(1101, 320);
+            label12.Name = "label12";
+            label12.Size = new Size(28, 21);
+            label12.TabIndex = 31;
+            label12.Text = " X ";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label11.Location = new Point(1000, 320);
+            label11.Name = "label11";
+            label11.Size = new Size(28, 21);
+            label11.TabIndex = 30;
+            label11.Text = " X ";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label10.Location = new Point(897, 320);
+            label10.Name = "label10";
+            label10.Size = new Size(28, 21);
+            label10.TabIndex = 29;
+            label10.Text = " X ";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label9.Location = new Point(797, 320);
+            label9.Name = "label9";
+            label9.Size = new Size(28, 21);
+            label9.TabIndex = 28;
+            label9.Text = " X ";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic);
+            label5.Location = new Point(692, 320);
+            label5.Name = "label5";
+            label5.Size = new Size(28, 21);
+            label5.TabIndex = 27;
+            label5.Text = " X ";
             // 
             // label4
             // 
             label4.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             label4.ForeColor = Color.Black;
-            label4.Location = new Point(12, 72);
+            label4.Location = new Point(29, 72);
             label4.Name = "label4";
-            label4.Size = new Size(479, 254);
+            label4.Size = new Size(503, 326);
             label4.TabIndex = 0;
             label4.Text = resources.GetString("label4.Text");
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackColor = Color.Transparent;
+            pictureBox5.Image = Properties.Resources.df9eafaf_7120_4b25_9de5_b4a840d70983;
+            pictureBox5.Location = new Point(569, 136);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(581, 176);
+            pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox5.TabIndex = 2;
+            pictureBox5.TabStop = false;
+            pictureBox5.Click += pictureBox5_Click_1;
             // 
             // label3
             // 
             label3.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(28, 25, 77);
-            label3.Location = new Point(126, 16);
+            label3.Location = new Point(125, 12);
             label3.Name = "label3";
             label3.Size = new Size(285, 43);
             label3.TabIndex = 24;
@@ -135,7 +241,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.manual;
-            pictureBox2.Location = new Point(33, 20);
+            pictureBox2.Location = new Point(55, 18);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(87, 37);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
@@ -154,70 +260,6 @@
             label1.TextAlign = ContentAlignment.MiddleCenter;
             label1.Click += label1_Click;
             // 
-            // panel2
-            // 
-            panel2.BackColor = Color.Transparent;
-            panel2.Controls.Add(label8);
-            panel2.Controls.Add(label7);
-            panel2.Controls.Add(label6);
-            panel2.Controls.Add(pictureBox3);
-            panel2.Controls.Add(label5);
-            panel2.Location = new Point(646, 190);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(485, 389);
-            panel2.TabIndex = 25;
-            // 
-            // label8
-            // 
-            label8.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            label8.ForeColor = Color.Black;
-            label8.Location = new Point(37, 267);
-            label8.Name = "label8";
-            label8.Size = new Size(396, 92);
-            label8.TabIndex = 3;
-            label8.Text = "-Low overhead, high performance\nOffers performance close to LRU with much less system resource usage.";
-            // 
-            // label7
-            // 
-            label7.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            label7.ForeColor = Color.Black;
-            label7.Location = new Point(37, 174);
-            label7.Name = "label7";
-            label7.Size = new Size(445, 93);
-            label7.TabIndex = 2;
-            label7.Text = "-Simpler than LRU\nIt uses a \"use bit\" and circular pointer instead of complex tracking, making it easier to implement.";
-            // 
-            // label6
-            // 
-            label6.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            label6.ForeColor = Color.Black;
-            label6.Location = new Point(37, 74);
-            label6.Name = "label6";
-            label6.Size = new Size(435, 81);
-            label6.TabIndex = 0;
-            label6.Text = "-Efficient memory management\nIt reduces page faults by retaining frequently accessed pages in memory.";
-            // 
-            // pictureBox3
-            // 
-            pictureBox3.Image = Properties.Resources.star1;
-            pictureBox3.Location = new Point(81, 20);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(45, 41);
-            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox3.TabIndex = 1;
-            pictureBox3.TabStop = false;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            label5.ForeColor = Color.FromArgb(28, 25, 77);
-            label5.Location = new Point(146, 16);
-            label5.Name = "label5";
-            label5.Size = new Size(265, 45);
-            label5.TabIndex = 0;
-            label5.Text = "How important?";
-            // 
             // pictureBox4
             // 
             pictureBox4.BackColor = Color.White;
@@ -234,7 +276,6 @@
             // panelBg
             // 
             panelBg.Controls.Add(label1);
-            panelBg.Controls.Add(panel2);
             panelBg.Controls.Add(panel3);
             panelBg.Location = new Point(0, 34);
             panelBg.Name = "panelBg";
@@ -260,10 +301,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)exit).EndInit();
             panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             panelBg.ResumeLayout(false);
             ResumeLayout(false);
@@ -279,14 +319,17 @@
         private PictureBox pictureBox2;
         private Label label3;
         private Label label4;
-        private Panel panel2;
-        private Label label5;
-        private Label label8;
-        private Label label7;
-        private Label label6;
-        private PictureBox pictureBox3;
         private PictureBox pictureBox4;
         private PictureBox exit;
         private Panel panelBg;
+        private PictureBox pictureBox5;
+        private Label label5;
+        private Label label12;
+        private Label label11;
+        private Label label10;
+        private Label label9;
+        private Label label14;
+        private Label label15;
+        private Label label16;
     }
 }
